@@ -2,15 +2,29 @@
 
 namespace App\Controller;
 
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class HomeController extends AbstractController
+class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(EventRepository $eventRepository, Request $request): Response
     {
-        return $this->render('home/index.html.twig');
+        $categorie = $request->query->get('categorie');
+
+        if ($categorie) {
+            // Récupère uniquement les événements validés de la catégorie demandée
+            $events = $eventRepository->findBy(['Validation' => true, 'Categorie' => $categorie]);
+        } else {
+            // Récupère tous les événements validés
+            $events = $eventRepository->findBy(['Validation' => true]);
+        }
+
+        return $this->render('home/index.html.twig', [
+            'events' => $events,
+        ]);
     }
 }

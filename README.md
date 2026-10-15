@@ -36,12 +36,12 @@ Le design est **déjà fait** : toutes les pages existent en HTML/CSS statique. 
 Le rendu se fait sur **votre fork**. Avant la date limite, complétez ce bloc (remplacez les `...`) et commitez-le :
 
 ```text
-Nom       : ...
-Prénom    : ...
+Nom       : LGARRAH
+Prénom    : ALI
 
 Compte admin (ROLE_ADMIN)
-  Email        : ...
-  Mot de passe : ...
+  Email        : alilgarrah@gmail.com
+  Mot de passe : Azerty.123456
 
 Compte utilisateur
   Email        : ...

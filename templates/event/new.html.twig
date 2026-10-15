@@ -11,6 +11,7 @@
             <p class="muted">Votre événement sera visible après validation par un administrateur.</p>
 
             <form class="form" method="post" enctype="multipart/form-data">
+            {{ form_row(form._token) }}
                 <div>
                     <label for="event_title" class="required">Titre</label>
                     <input type="text" id="event_title" name="event[title]" placeholder="Ex. : Soirée jazz au Kiosque" required>

@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class ValidateController extends AbstractController
+class ValidateController extends AbstractController
 {
     #[Route('/validate', name: 'app_validate')]
-    public function index(): Response
+    public function index(EventRepository $eventRepository): Response
     {
-        return $this->render('validate/index.html.twig');
+        $events = $eventRepository->findBy(['Validation' => false]);
+
+        return $this->render('validate/index.html.twig', [
+            'events' => $events,
+        ]);
     }
 }

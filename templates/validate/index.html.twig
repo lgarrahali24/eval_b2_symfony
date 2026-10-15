@@ -3,14 +3,16 @@
 {% block title %}Validation des événements{% endblock %}
 
 {% block body %}
-    <div class="section-head">
-        <div>
-            <h1>Événements à valider</h1>
-            <p class="muted">3 événements en attente de validation.</p>
-        </div>
-    </div>
+<div class="container">
+    <h1>Validation des événements</h1>
 
-    <div class="card table-wrap">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    {% if events is empty %}
+        <p>Aucun événement en attente de validation.</p>
+    {% else %}
         <table class="table">
             <thead>
                 <tr>
@@ -19,51 +21,25 @@
                     <th>Catégorie</th>
                     <th>Places</th>
                     <th>Statut</th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><a href="{{ path('app_event_show', {id: 7}) }}">Atelier cuisine du monde</a></td>
-                    <td>16/12/2026 18h00</td>
-                    <td><span class="badge cat-atelier">Atelier</span></td>
-                    <td>12</td>
-                    <td><span class="badge badge-pending">Non validé</span></td>
-                    <td>
-                        <form method="post">
-                            <button type="submit" class="btn btn-small btn-success">Valider</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="{{ path('app_event_show', {id: 8}) }}">Tournoi de basket 3x3</a></td>
-                    <td>19/12/2026 14h00</td>
-                    <td><span class="badge cat-sport">Sport</span></td>
-                    <td>48</td>
-                    <td><span class="badge badge-pending">Non validé</span></td>
-                    <td>
-                        <form method="post">
-                            <button type="submit" class="btn btn-small btn-success">Valider</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="{{ path('app_event_show', {id: 9}) }}">Concert de Noël</a></td>
-                    <td>22/12/2026 20h00</td>
-                    <td><span class="badge cat-concert">Concert</span></td>
-                    <td>150</td>
-                    <td><span class="badge badge-pending">Non validé</span></td>
-                    <td>
-                        <form method="post">
-                            <button type="submit" class="btn btn-small btn-success">Valider</button>
-                        </form>
-                    </td>
-                </tr>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.titre }}</td>
+                        <td>{{ event.date ? event.date|date('d/m/Y H\\h00') : '' }}</td>
+                        <td><span class="badge">{{ event.categorie }}</span></td>
+                        <td>{{ event.nombreDePlace }}</td>
+                        <td><span class="badge badge-warning">Non validé</span></td>
+                        <td>
+                            <a href="{{ path('app_event_validate_action', {'id': event.id}) }}" class="btn btn-success">Valider</a>
+                            <a href="{{ path('app_event_delete_action', {'id': event.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
-    </div>
-
-    {# Si aucun événement à valider :
-    <p class="empty">Aucun événement en attente 🎉</p>
-    #}
+    {% endif %}
+</div>
 {% endblock %}
